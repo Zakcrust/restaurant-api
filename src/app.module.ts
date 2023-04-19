@@ -21,16 +21,21 @@ import { TransactionPayment } from './transaction-payment/entities/transaction-p
 import { PaymentMethod } from './payment-method/entities/payment-method.entity';
 import { Menu } from './menu/entities/menu.entity';
 import { Member } from './member/entities/member.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3309,
-      username: 'root',
-      password: 'uIhNPix_tB^J0=1XiLG4B+5wLBP,33GH',
-      database: 'restaurant_dev',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
       entities: [Staff, StaffRole, StaffType],
       synchronize: false,
     }),
